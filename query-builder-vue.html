@@ -1,0 +1,1033 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Team Member Queries</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    
+
+    <style>
+
+        body {font-family: Arial, Helvetica, sans-serif;}
+
+        /* Advance filter styles */
+        .tab-selected {
+            color: rgb(0, 0, 0) !important;
+            background-color: #ebeeff !important;
+            border-color: #ebeeff !important;
+            text-decoration: none;
+            padding: 10px !important;
+            border-radius: .25rem;
+            font-size: medium;
+        }
+
+        .tab-unselected {
+            color: rgb(0, 0, 0) !important;
+            text-decoration: none;
+            padding: 10px !important;
+            font-size: medium;
+        }
+
+        .tab-card {
+            background-color: #ebeeff !important;
+            border-color: #ebeeff !important;
+        }
+
+        .modal-mask {
+            position: fixed;
+            z-index: 9998;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1);
+            display: table;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-wrapper {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .modal-container {
+            width: 50%;
+            height: 40% !important;
+            margin: 3% auto;
+            padding: 10px 15px;
+            background-color: #fff;
+            border-radius: 2px;
+            /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33); */
+            transition: all 0.3s ease;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        .modal-header {
+            margin-top: 0;
+            color: #000000;
+            padding: 5px;
+        }
+
+        .modal-body-add-data {
+            margin: 2px 0;
+            padding: 5px 0;
+        }
+        .modal-footer {
+            /* border: none;
+            margin-top: 3%;
+            float: right;
+            padding: 0; */
+            border: none;
+            position: fixed;
+            bottom: 30%;
+            right: 25%; 
+        }
+
+        .modal-enter {
+            opacity: 0;
+        }
+
+        .modal-leave-active {
+            opacity: 0;
+        }
+
+        .modal-enter .modal-container,
+        .modal-leave-active .modal-container {
+            -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+        }
+
+        .advance-filter-container {
+            min-height: 300px;
+            padding: 3px;
+        }
+
+        .btn-create-group {
+            color: #fff !important;
+            background-color: #3791db !important;
+            border-color:#3791db !important;
+        }
+
+        .selection-card {
+            border-color: #ffffff !important;
+        }
+        .config-card {
+            /* background-color: #fff !important; */
+            padding: 8px;
+        }
+
+        .component-card {
+            border-color: #cacaca !important;
+            border:solid .3px;
+            border-radius: 5px;
+            border-width: bold;
+            background-color: #fafafd;
+            padding: 0.3%;
+            margin-top: 0%;
+            margin-left: 1px;
+            /* min-height: 150px; */
+        }
+
+        .data-card {
+            border-radius: 5px;
+            border-width: bold;
+            background-color: #ececfa;
+            padding: 0px;
+            margin-top: 5px;
+            margin-bottom:20px !important;
+        }
+
+        .delete-component-btn {
+            float: right;
+        }
+
+        .component-form {
+            padding: 5px;
+        }
+
+        .operators {
+            width:35%;
+            margin: 3px;
+            background-color: white;
+        }
+        .basic-dropdown {
+            width:95%;
+            margin: 3px;
+            background-color: white;
+        }
+        .select-component-dropdown {
+            background-color:white;
+            max-height: 100px !important;
+        }
+
+
+        .input-custom {
+            width: 95%;
+            margin: 5px;
+        }
+
+        .data-type {
+            padding:7px;
+            background-color:#dadef9;
+            margin: 3px;
+        }
+
+
+    </style>
+</head>
+
+<body><br>
+<div>
+    <v-app>
+        <v-main>
+            <div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#directProvisioning">
+                    <div class="card-body">
+                        <!-- Advance Filter UI Main Entrance -->
+                        <div id="advanceFilterComponent" class="advance-filter-container">
+                            <v-row>
+                                <v-col cols="10" sm="10" style="padding-top:0px; padding-bottom:5px;">
+                                    <h1 style="margin:7px">Team Member Queries</h1>
+                                    <p style="margin-left:10px; margin-bottom:30px; color:grey">An application where you can create a set of team base on a specific feature to develop. </p>
+
+                                </v-col>
+                                <v-col cols="2" sm="2" style="padding:10px;">
+                                    <v-row>
+                                        <v-avatar size="50">
+                                            <img src="./images/50x50.png"/>
+                                        </v-avatar>
+                                        <div style="padding-left:5px; padding-top:10px">
+                                            <p style="color:grey">Developer: Ralph Charlo Fabian</p>
+                                            <a style="margin-bottom:15px; color:grey" href="http://github.com/ralphcharlofabian ">https://github.com/ralphcharlofabian </a>
+                                        </div>
+                                    </v-row>
+                                </v-col>
+                            </v-row>
+                            
+                                <query-component 
+                                v-bind:maindata="mainData" 
+                                v-bind:modaltrigger="showModal" 
+                                v-bind:fetchedtablelist = "fetchedTableList"
+                                v-bind:modaltriggerfn="showModalfn"
+                                v-bind:deletegroupfn="deleteGroupfn"
+                                v-bind:deletedatafn="deleteDatafn"
+                                v-bind:getadddatagroupidfn="getAddDataGroupIdfn"
+                                v-bind:savedatafn="saveDatafn"
+                                v-bind:creategroupfn ="createGroupfn"
+                                ></query-component>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </v-main>
+    </v-app>         
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://unpkg.com/vue-select@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
+<link rel="stylesheet" href="./font-awesome-4.7.0/css/font-awesome.min.css">
+
+<!--VueJS START-->
+<script>
+
+  // handle the state management of data
+  var store = {  
+      debug: true,
+      state: {},
+  }
+
+
+
+  const formatDate = date => date.toISOString().slice(0, 10);
+  var dateToday = formatDate(new Date());
+
+  function uuidv4() {
+    var a, b, c, d;
+    var time = Math.round(new Date().getTime() / 1000);
+    var version = window.navigator.appVersion;
+    var href = window.location.href;
+      
+    // a - unix timestamp
+    a = time.toString(16).substring(0, 8);
+
+    // b - browser
+    var match = version.match(/\d+/g);
+    if (!match) {
+      throw 'Invalid browser version string';
+    }
+    var sum = 0;
+    for (var i = 0, ii = match.length; i < ii; ++i) {
+      sum += parseInt(match[i], 10);
+    }
+    b = (sum * sum * sum).toString(16).substring(0, 6);
+
+    // c - url
+    c = (href.length * href.length * href.length).toString(16).substring(0, 4);
+
+    // d - random
+    d = Math.random().toString().substring(2);
+    d = parseInt(d, 10);
+    d = d.toString(16).substring(0, 6);
+
+    return [a, b, c, d].join('-');
+  };
+
+
+  Vue.component('table-column-modal',{
+      props:['modaltrigger', 'modaltriggerfn', 'groupid','savedatafn', 'fetchedtablelist'],
+      data:function () {
+          return {
+                dataId:null,
+                skillOption:["Frontend Developer","Backend Developer","Quality Assurance","UI/UX Designer","DevOps"],
+                selectedSkill:"",
+                fetchedPersonList:[],
+                selectedPerson:{},
+                taskName:"",
+                allotedHrs:0,
+                difficulty:"",
+                difficultyLevel:["easy","normal","hard"],
+                priority:"",
+                priorityLevel:["least","normal","urgent"],
+                estimatedDateFinish:dateToday,
+                showInfo:false,
+                avatarPicture:'./images/Arcy Cola.png',
+                taskDescription:"",   
+          }
+      },
+      template: 
+          `<div  v-show="modaltrigger === true">
+              <div name="modal">
+                <div class="modal-mask">
+                  <div class="modal-wrapper">
+                    <div class="modal-container">
+                      <div class="modal-header">
+                        <slot name="header">
+                            <v-row>
+                                <v-col cols="2" sm="2">
+                                    <h3> Add Data </h3>
+                                </v-col>
+                                <v-col cols="9" sm="9"></v-col>
+                                <v-col cols="1" sm="1" style="padding-left:4%">
+                                    <v-btn class="btn" @click="modaltriggerfn" @click="clearDropdown" color="primary" depressed icon style="background-color:#eb6666"">
+                                        <i class="fa fa-times" ></i>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </slot>
+                      </div>
+                      <div class="modal-body-add-data">
+                        <slot name="body">
+                          <div class="row" style="margin-bottom:5px;">
+                              <div class=" col-sm-5 ">
+                                <span>Work:</span>
+                                  <v-select 
+                                      class="basic-dropdown"
+                                      style="margin:5px; padding:0px !Important;"
+                                      :options="skillOption"
+                                      :clearable="false"
+                                      v-model="selectedSkill"
+                                      @input="setSelectedSkill"
+                                  ></v-select>   
+                              </div>
+                              <div class=" col-sm-5 ">
+                                  <div v-show="selectedSkill !== null && fetchedPersonList.length > 0">
+                                    <span>Staff:</span>
+                                      <v-select 
+                                          placeholder='Select Staff'
+                                          class="basic-dropdown"
+                                          style="margin:5px; padding:0px !Important;"
+                                          :options="fetchedPersonList"
+                                          :clearable="false"
+                                          v-model="selectedPerson"
+                                          label="name"
+                                          @input="setSelectedPerson"
+                                      ></v-select>    
+                                  </div>
+                              </div>
+                              <div>
+                                <div v-show="showInfo">
+                                <v-avatar size="70">
+                                  <v-img v-show="selectedPerson.name === 'Arcy Cola'" src="./images/Arcy Cola.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Maria Ozbuck'" src="./images/Maria Ozbuck.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Shiela Hemsworth'" src="./images/Shiela Hemsworth.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Johnny Walker'" src="./images/Johnny Walker.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Ad Berkushiapal'" src="./images/Ad Berkushiapal.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Amy Joysprout'" src="./images/Amy Joysprout.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Brown Lim'" src="./images/Brown Lim.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Matt Ambrose'" src="./images/Matt Ambrose.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Marian Windtalker'" src="./images/Marian Windtalker.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Donalyn Damon'" src="./images/Donalyn Damon.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Candice Beloved'" src="./images/Candice Beloved.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Jimmy Ford'" src="./images/Jimmy Ford.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Felicity Hope'" src="./images/Felicity Hope.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Jester Pipefield'" src="./images/Jester Pipefield.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Jomar Cruz'" src="./images/Jomar Cruz.png" alt="name" ></v-img>
+                                  <v-img v-show="selectedPerson.name === 'Junnie Boy'" src="./images/Junnie Boy.png" alt="name" ></v-img>
+                                </v-avatar>
+                                </div>
+                                </div>
+                          </div>
+                          <div>
+
+                              <div v-show="showInfo">
+                                  <div class="row data-type">
+                                    <v-row>
+                                        <v-col cols="12" sm="12">
+                                            <input
+                                                placeholder='Name of the task...'
+                                                type="text"
+                                                class="form-control form-control-sm input-custom"
+                                                style="margin-left:20px; height:100%; width:95%; font-weight:bold"
+                                                v-model="taskName"/>    
+                                        </v-col>
+                                        <v-col cols="12" sm="12">
+                                            <textarea
+                                                placeholder='Description...'
+                                                type="text"
+                                                class="form-control form-control-sm input-custom"
+                                                style="margin-left:20px; height:100%; width:95%;"
+                                                v-model="taskDescription"
+                                                rows:3></textarea>    
+                                        </v-col>
+                                        <v-col cols="3" sm="3">
+                                                <span style="margin-top:5px; margin-left:20px;">Alloted hours: </span>
+                                            <input
+                                              type="number" min="0"
+                                              style="margin-left:20px; height:20px; width:20%"
+                                              v-model.number="allotedHrs"
+                                              @input="removeNegative($event,'allotedHrs', allotedHrs)"/> 
+                                        </v-col>
+                                        <v-col cols="3" sm="3">
+                                            <span style="margin-top:5px; margin-left:10px;">Priority: </span>
+                                            <v-select 
+                                                placeholder='Priority Level'
+                                                class="basic-dropdown"
+                                                style="margin-left:3px; padding:0px !Important;"
+                                                :options="priorityLevel"
+                                                :clearable="false"
+                                                v-model="priority"
+                                            ></v-select> 
+                                        </v-col>
+                                        <v-col cols="3" sm="3">
+                                            <span style="margin-top:5px; margin-left:10px;">Difficulty: </span>
+                                            <v-select 
+                                                placeholder='Difficulty Level'
+                                                class="basic-dropdown"
+                                                style="margin-left:3px; padding:0px !Important;"
+                                                :options="difficultyLevel"
+                                                :clearable="false"
+                                                v-model="difficulty"
+                                            ></v-select> 
+                                        </v-col>
+                                        <v-col cols="3" sm="3">
+                                            <span style="margin-top:5px; margin-left:0px;">Estimated deadline: </span>
+                                            <input 
+                                                type="date"
+                                                @change="updateExactDate"
+                                                style="width:70%; margin-left:0px !important;"
+                                                class="form-control form-control-sm input-custom"
+                                                v-model="estimatedDateFinish"
+                                                id="exactDate"/>
+                                        </v-col>
+                                    </v-row>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                                <div style="margin:10px">
+                                    <v-btn @click="modaltriggerfn" @click="clearDropdown" small style="margin-right:5px" depressed>
+                                        Back
+                                    </v-btn>
+                                    <v-btn  @click="modaltriggerfn" @click="saveAndClearDropdown" :disabled="selectedPerson === {}" small depressed style="background-color:#7c55f1" color="primary">  
+                                        Save
+                                    </v-btn>
+                         
+                                    
+                                </div>
+                          </div>
+                        </slot>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>`,
+      methods:{
+          setSelectedSkill () {
+
+              // everytime table was changed, this will clear the previous data
+              console.log(this.skillOption,'skillOption')
+              //skillOption:["Frontend Developer","Backend Developer","Quality Assurance","UI/UX Designer","DevOps"],
+              if (this.selectedSkill === "Frontend Developer") {
+                this.fetchedPersonList = [
+                    {name:'Arcy Cola',
+                    picture:'./images/Arcy Cola.png'},
+                    {name:'Maria Ozbuck',
+                    picture:'./images/Maria Ozbuck.png'},
+                    {name:'Shiela Hemsworth',
+                    picture:'./images/Shiela Hemsworth.png'},
+                    {name:'Johnny Walker',
+                    picture:'./images/Johnny Walker.png'},
+                    {name:'Ad Berkushiapal',
+                    picture:'./images/Ad Berkushiapal.png'},
+                ]
+              } else if (this.selectedSkill === "Backend Developer") {
+                  this.fetchedPersonList = [
+                  {name:'Amy Joysprout',
+                    picture:'./images/Amy Joysprout.png'},
+                    {name:'Brown Lim',
+                    picture:'./images/Brown Lim.png'},
+                    {name:'Matt Ambrose',
+                    picture:'./images/Matt Ambrose.png'},
+                    {name:'Marian Windtalker',
+                    picture:'./images/Marian Windtalker.png'},
+                  ]
+              } else if (this.selectedSkill === "Quality Assurance" ) {
+                this.fetchedPersonList = [
+                {name:'Donalyn Damon',
+                    picture:'./images/Donalyn Damon.png'},
+                    {name:'Candice Beloved',
+                    picture:'./images/Candice Beloved.png'},
+                    {name:'Jimmy Ford',
+                    picture:'./images/Jimmy Ford.png'},
+                ]
+              } else if (this.selectedSkill === "Quality Assurance" ) {
+                this.fetchedPersonList = [
+                {name:'Felicity Hope',
+                    picture:'./images/Felicity Hope.png'},
+                    {name:'Jester Pipefield',
+                    picture:'./images/Jester Pipefield.png'},
+                ]
+              } else {
+                  this.fetchedPersonList =[
+                  {name:'Jomar Cruz',
+                    picture:'./images/Jomar Cruz.png'},
+                    {name:'Junnie Boy',
+                    picture:'./images/Junnie Boy.png'},
+                  ]
+              }
+
+              this.selectedPerson = {};
+
+          },
+
+          setSelectedPerson () {
+            console.log(this.selectedPerson,'selected person')
+            this.showInfo = true;
+            this.avatarPicture = this.selectedPerson.picture;
+          },
+
+          updateExactDate () {
+              console.log(this.exactDate)
+          },
+
+          removeNegative(e,type, value) {
+
+              value = Math.max(0, parseInt(e.target.value) || 0);
+
+              if(type==='numberValue'){
+                  this.numberValue = value;
+              } else if (type==='daysBefore') {
+                  this.daysBefore = value;
+              } else if (type==='duration') {
+                  this.duration = value;
+              }
+          },
+          clearDropdown () {
+
+                this.dataId = null;
+                this.fetchedPersonList= [],
+                this.selectedPerson= {},
+                this.taskName= "",
+                this.allotedHrs= 0,
+                this.difficulty= "",
+                this.priority= "",
+                this.estimatedDateFinish= dateToday,
+                this.showInfo= false,
+                this.avatarPicture= './images/Arcy Cola.png',
+                this.taskDescription= "",
+                this.selectedSkill = null;
+                this.selectedPerson = {};
+
+          },
+          saveAndClearDropdown () {
+
+              this.mergeData();
+                this.dataId = null;
+                this.fetchedPersonList= [],
+                this.selectedPerson= {},
+                this.taskName= "",
+                this.allotedHrs= 0,
+                this.difficulty= "",
+                this.priority= "",
+                this.estimatedDateFinish= dateToday,
+                this.showInfo= false,
+                this.avatarPicture= './images/Arcy Cola.png',
+                this.taskDescription= "",
+                this.selectedSkill = null;
+                this.selectedPerson = {};
+          },
+          mergeData () {
+              var mergedData = {};
+              mergedData['dataId'] = uuidv4();
+              mergedData['selectedSkill'] = this.selectedSkill;
+              mergedData['selectedPerson'] = this.selectedPerson;
+              mergedData['taskName'] = this.taskName;
+              mergedData['allotedHrs'] = this.allotedHrs;
+              mergedData['difficulty'] = this.difficulty;
+              mergedData['priority'] = this.priority;
+              mergedData['estimatedDateFinish'] = this.estimatedDateFinish;
+              mergedData['showInfo'] = this.showInfo;
+              mergedData['avatarPicture'] = this.avatarPicture;
+              mergedData['taskDescription'] = this.taskDescription;
+              console.log(mergedData,'merged data');
+
+              this.savedatafn(mergedData);
+          },
+
+      },
+  })
+
+
+
+ 
+  Vue.component('data-component', {
+      props:['data' , 'deletedatafn','groupid'],
+      data: function() {
+          return {
+                skillOption:["Frontend Developer","Backend Developer","Quality Assurance","UI/UX Designer","DevOps"],
+                difficultyLevel:["easy","normal","hard"],
+                priorityLevel:["least","normal","urgent"],
+          }
+      },
+      template:
+      `  <div class="data-card wrapper" style="margin-left: 1% !important;">
+                  <div>
+                    <v-row gutters>
+                        <v-col cols="2" sm="2" style="padding-left:25px; padding-bottom:0px">
+                            <v-row>
+                                <v-avatar size="70" style="margin:8px">
+                                    <v-img v-show="data.selectedPerson.name === 'Arcy Cola'" src="./images/Arcy Cola.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Maria Ozbuck'" src="./images/Maria Ozbuck.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Shiela Hemsworth'" src="./images/Shiela Hemsworth.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Johnny Walker'" src="./images/Johnny Walker.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Ad Berkushiapal'" src="./images/Ad Berkushiapal.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Amy Joysprout'" src="./images/Amy Joysprout.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Brown Lim'" src="./images/Brown Lim.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Matt Ambrose'" src="./images/Matt Ambrose.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Marian Windtalker'" src="./images/Marian Windtalker.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Donalyn Damon'" src="./images/Donalyn Damon.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Candice Beloved'" src="./images/Candice Beloved.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Jimmy Ford'" src="./images/Jimmy Ford.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Felicity Hope'" src="./images/Felicity Hope.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Jester Pipefield'" src="./images/Jester Pipefield.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Jomar Cruz'" src="./images/Jomar Cruz.png" alt="name" ></v-img>
+                                    <v-img v-show="data.selectedPerson.name === 'Junnie Boy'" src="./images/Junnie Boy.png" alt="name" ></v-img>
+                                </v-avatar>
+                                <div>
+                                    <h3 style="margin-left:10px; margin-top:15px;color:cadetblue">{{data.selectedPerson.name}}</h3>
+                                    <h5 style="margin-left:10px; margin-top:0px; color:grey">{{data.selectedSkill}}</h5>
+                                </div>
+                            </v-row>
+                        </v-col>
+                        <v-col cols="4" sm="4"  style="padding:3px;">
+                            <input
+                                placeholder='Name of the task...'
+                                type="text"
+                                class="form-control form-control-sm input-custom"
+                                style="margin-left:0px; height:30px; width:100%;font-weight:bold"
+                                v-model="data.taskName"/> 
+
+                            <input
+                                placeholder='Name of the task...'
+                                type="text"
+                                class="form-control form-control-sm input-custom"
+                                style="margin-left:0px; height:25px; width:100%;color:grey"
+                                v-model="data.taskDescription"/>    
+                        
+                        </v-col>
+                        <v-col cols="3" sm="3"  style="padding:3px;">
+                            <v-row style="margin-top:0px; margin-left:0px;">
+                                <v-col cols="2" sm="2">
+                                    <span style="margin-top:5px">Priority: </span>
+                                </v-col>
+                                <v-col cols="5" sm="5" style="padding-top:3px">
+                                    <v-select 
+                                        placeholder='Priority Level'
+                                        class="basic-dropdown"
+                                        style="margin-left:3px; padding-top:0px !Important;margin-top:0px;"
+                                        :options="priorityLevel"
+                                        :clearable="false"
+                                        v-model="data.priority"
+                                    ></v-select> 
+                                </v-col>
+                            </v-row>
+                            <v-row style="margin-top:0px; margin-left:0px;">
+                                <v-col cols="2" sm="2">
+                                    <span style="margin-top:5px">Difficulty: </span>
+                                </v-col>
+                                <v-col cols="5" sm="5" style="padding-top:3px">
+                                    <v-select 
+                                        placeholder='Priority Level'
+                                        class="basic-dropdown"
+                                        style="margin-left:3px; padding-top:0px !Important;margin-top:0px;"
+                                        :options="difficultyLevel"
+                                        :clearable="false"
+                                        v-model="data.difficulty"
+                                    ></v-select> 
+                                </v-col>
+                            </v-row>
+                        
+                        </v-col>
+                        <v-col cols="2" sm="2"  style="padding:3px;padding-bottom:0px">
+                            <div>
+                                <input 
+                                    type="date"
+                                    @change="updateExactDate"
+                                    style="width:60%;!important; height:30px;"
+                                    class="form-control form-control-sm input-custom"
+                                    v-model="data.estimatedDateFinish"
+                                    id="exactDate"/>
+                                </div>
+                                <div style="margin-left:5px">
+                                    Alloted time in hr:
+                                <input
+                                    type="number" min="0"
+                                    style="margin-left:10px; height:30px; width:15%"
+                                    v-model.number="data.allotedHrs"
+                                    @input="removeNegative($event,'allotedHrs', allotedHrs)"/> 
+                                    
+                                    </div>
+                            
+
+
+                    
+                        </v-col>
+                        <v-col cols="1" sm="1"  style="padding:3px; padding-bottom:0px">
+                            <v-row>
+                                <v-col  cols="6" sm="6"></v-col>
+                                <v-col cols="1" sm="1">
+                                    <v-btn @click="deletedatafn(groupid, data.dataId)" fab style=" background-color:#eb6666" color="primary" elevation="0" small><i class="fas fa fa-trash"></i> </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                    </v-row>
+                    <v-row style="padding:0px;">
+                        <v-col  cols="10" sm="10"></v-col>
+                        <v-col  offset-md="3" style="padding:0px;">
+                            <span style="color:#d1d1d1; justify-content:end">task id: {{data.dataId}}</span>
+                            </v-col>
+                    </v-row>
+                  </div>
+          </div>`
+          ,
+      methods: {
+          removeNegative(e, type, value) {
+              value = Math.max(0, parseInt(e.target.value) || 0);
+
+              if(type==='numberValue'){
+                   this.data.numberValue = value;
+              } else if (type==='daysBefore') {
+                   this.data.daysBefore = value;
+              } else if (type==='duration') {
+                   this.data.duration = value;
+              }
+          },
+          updateExactDate () {
+              console.log(this.exactDate)
+          },
+      }
+})
+
+
+  Vue.component('query-component', {
+          props: ['maindata', 'modaltriggerfn','deletegroupfn', 'deletedatafn', 'modaltrigger', 'getadddatagroupidfn','savedatafn', 'creategroupfn','fetchedtablelist'],
+          data: function () {
+          return {
+              groupId:null,
+              condition:['AND', 'OR'],
+              selectedCondition:'AND'
+          } 
+      },
+          template:
+          `<div>
+              <div class="component-card" v-for="y in maindata" :key="y">
+                  <div style="margin-top:3px;">
+                      <v-row>
+                        <v-col cols="9" sm="10">   
+                          <div v-show="y.groups.length > 0 || y.dataList.length > 0">
+                              <v-select 
+                                  placeholder='----'
+                                  class="operators"
+                                  style=" padding:0px !Important; width:8%"
+                                  :options="condition"
+                                  :clearable="false"
+                                  v-model="y.groupCondition"
+                              ></v-select>
+                          </div>
+                  
+                        
+                        </v-col>
+                        <v-col cols="3" sm="2">
+                            <v-btn @click="modaltriggerfn" @click="getadddatagroupidfn(y.groupId)" style="margin-right:2%; background-color:#7c55f1"  color="primary" elevation="1" small> <i class="fa fa-plus-circle"></v-btn>
+                            <v-btn @click="creategroupfn(y.groupId)" style="margin-right:2%; background-color:#7c55f1" color="primary" elevation="1" small> Create Group</v-btn>
+                            <v-btn @click="deletegroupfn(y.groupId)" type="button" style="max-width: 35px !important; background-color:#eb6666" 
+                              v-show="!y.rootGroup" color="primary" elevation="1" small><i class="fas fa fa-trash"></i>
+                            </v-btn>
+                        </v-col>
+                      </v-row>
+                  </div>
+                  
+                  <div class="col-sm-12 " v-show="y.dataList">
+                      <div v-for="data in y.dataList"> 
+                          <data-component 
+                             v-bind:data="data"
+                             v-bind:deletedatafn="deletedatafn"
+                             v-bind:groupid="y.groupId"></data-component>
+                      </div>
+                  </div>
+                  <div class="col-sm-12" v-show="y.groups">
+                         <query-component 
+                             v-bind:maindata="y.groups"
+                             v-bind:modaltriggerfn="modaltriggerfn"
+                             v-bind:deletegroupfn="deletegroupfn"
+                             v-bind:deletedatafn="deletedatafn"
+                             v-bind:modaltrigger="modaltrigger" 
+                             
+                             v-bind:fetchedtablelist = "fetchedtablelist"
+                             v-bind:getadddatagroupidfn="getadddatagroupidfn"
+                             v-bind:savedatafn="savedatafn"
+                             v-bind:creategroupfn ="creategroupfn"
+                         ></query-component> 
+                  </div>
+                  
+                  <table-column-modal 
+                      v-bind:modaltrigger="modaltrigger" 
+                      v-bind:modaltriggerfn="modaltriggerfn" 
+                      
+                      v-bind:fetchedtablelist = "fetchedtablelist"
+                      v-bind:groupid="y.groupId"
+                      v-bind:savedatafn="savedatafn"></table-column-modal>
+              </div>
+          </div>`,
+     
+      methods: { },
+      beforeCreate: function() {},
+  })
+
+  Vue.component('v-select', VueSelect.VueSelect)
+
+
+  // Main Component for ADVANCE FILTER
+  var advanceFilter = new Vue({
+      el: '#advanceFilterComponent',
+      data: {
+          showModal: false,
+          tempGroupData:{
+              groupId:uuidv4(),
+              rootGroup:false,
+              groupCondition:'AND',
+              groups:[],   
+              dataList:[]
+          },
+          selectedGroupId: null,
+          mainData:[{
+              groupId:uuidv4(),
+              rootGroup:true,
+              groupCondition:'AND',
+              groups:[],   
+              dataList:[]
+          }],
+          fetchedTableList:[],
+          generatedQuery:null,
+          customQuery:null,
+          fetchedData:null,
+          advanceFilterTab:'customUI'
+      },
+      methods: {
+
+          clearMainDatafn() { // to be ready
+              advanceFilter.mainData = [];
+
+              var  tempMainData ={
+                  groupId:uuidv4(),
+                  rootGroup:true,
+                  groupCondition:'AND',
+                  groups:[],   
+                  dataList:[]
+              };
+
+              advanceFilter.mainData.push(tempMainData);
+              console.log(advanceFilter.mainData);
+          },
+
+          showModalfn() {
+              advanceFilter.showModal = !advanceFilter.showModal;
+          },
+
+          deleteViaGroupId (selectedGroupId, data) {
+
+              if(data){
+                  for (var i = 0; i < data.length; i++) {
+                      if (selectedGroupId === data[i].groupId) {
+
+                              data.splice(i, 1);  // delete the specified group
+                              break;
+
+                      } else {
+                          console.log('not found')
+                          this.deleteViaGroupId(selectedGroupId, data[i].groups)
+                      }
+                  }                 
+              }
+          },
+
+          deleteGroupfn (selectedGroupId) {
+              this.deleteViaGroupId(selectedGroupId, advanceFilter.mainData)
+              this.generatedQuery = null;
+              this.generateSQL();
+          },
+
+          deleteViaGroupIdAndDataId (selectedGroupId, selectedDataId, data) {
+
+              if(data){
+                  for (var i = 0; i < data.length; i++) {
+                      if (selectedGroupId === data[i].groupId) {
+                          
+                          if (data[i].dataList) {
+                              for (var d = 0; d < data[i].dataList.length; d++) {
+                                  var obj = data[i].dataList[d];
+                                  
+                                  if (obj.dataId === selectedDataId) {
+                                      // serarch for index under dataList
+
+                                          var index = data[i].dataList.findIndex(function(o){ 
+                                               return o.dataId === selectedDataId;
+                                          })
+  
+                                          if (index !== -1) {
+                                              data[i].dataList.splice(index, 1)
+                                              break;
+                                          }
+
+                                      
+                                  }
+                              }
+                          }
+                      } else {
+                          console.log('id not found')
+                          this.deleteViaGroupIdAndDataId(selectedGroupId, selectedDataId, data[i].groups)
+                      }
+                  }
+              }
+          },
+          deleteDatafn (selectedGroupId, selectedDataId ) {
+              this.deleteViaGroupIdAndDataId(selectedGroupId, selectedDataId, advanceFilter.mainData)
+              this.generatedQuery = null;
+              this.generateSQL();
+          },
+          addDataViaGroupId (selectedGroupId , data, savedData) {
+
+              if(data && savedData){
+                  for (var i = 0; i < data.length; i++) {
+                      if (selectedGroupId === data[i].groupId) {
+                          data[i].dataList.push(savedData)
+                          break;
+
+                      } else {
+                          console.log('not found')
+                          this.addDataViaGroupId(selectedGroupId, data[i].groups, savedData)
+                      }
+                  }                 
+              }
+
+          },
+          getAddDataGroupIdfn (selectedGroupId) {
+              advanceFilter.selectedGroupId = selectedGroupId; // save when add data is clicked
+          },
+          saveDatafn(savedData) {
+              this.addDataViaGroupId(advanceFilter.selectedGroupId, advanceFilter.mainData, savedData)
+              advanceFilter.selectedGroupId = null;
+              this.generatedQuery = null;
+              this.generateSQL();
+          },
+
+          addGroupViaGroupId (selectedGroupId , data) {
+
+              if(data){
+                  for (var i = 0; i < data.length; i++) {
+                      if (selectedGroupId === data[i].groupId) {
+
+                          var  tempGroupData ={
+                                  groupId:uuidv4(),
+                                  rootGroup:false,
+                                  groupCondition:'AND',
+                                  groups:[],   
+                                  dataList:[]
+                              };
+
+
+                          data[i].groups.push(tempGroupData)
+                          break;
+                      
+                      } else {
+                          console.log('not found')
+                          this.addGroupViaGroupId(selectedGroupId, data[i].groups)
+                      }
+                  }                 
+              }
+          },
+          createGroupfn(selectedGroupId) { 
+              this.addGroupViaGroupId(selectedGroupId, advanceFilter.mainData)
+              this.generatedQuery = null;
+              this.generateSQL();
+          },
+          generateSQL () {
+              console.log(advanceFilter.mainData,'dvanceFilter.mainData')
+              console.log(JSON.stringify(advanceFilter.mainData))
+
+          }
+
+      },
+
+      mounted:function () {
+ 
+              
+              var dummy = [{
+                  "groupId":"61d4030e-36657f-3d0b-202323",
+                  "rootGroup":true,
+                  "groupCondition":"AND",
+                  "groups":[{
+                    "groupId":"61d40331-36657f-3d0b-209606",
+                    "rootGroup":false,
+                    "groupCondition":"AND",
+                    "groups":[],
+                    "dataList":[{
+                      "dataId":"61d40338-36657f-3d0b-259d8b",
+                      "selectedPerson":{"name":"Arcy Cola","picture":"./images/Arcy Cola.png"},
+                      "taskName":"Create a Team Composition Query using VUE.js",
+                      "allotedHrs":4,
+                      "difficulty":"easy",
+                      "priority":"urgent",
+                      "estimatedDateFinish":"2022-02-28", 
+                      "showInfo":false,
+                      "taskDescription":"Some description regarding the development of a feature app like a query builder", 
+                      "selectedSkill":"Frontend Developer"
+                    }]
+                  }],
+                  "dataList":[],
+                }]
+              this.mainData = dummy;
+              console.log('dummy')
+          }
+     
+  })
+console.log(advanceFilter.mainData,'xxxx')
+</script>
+<!--VueJS END-->
